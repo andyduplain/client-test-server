@@ -55,8 +55,4 @@ impl HeaderRange {
 
         Ok(Self { units, start, end })
     }
-
-    pub fn len(&self) -> usize {
-        (self.end - self.start) as usize
-    }
 }

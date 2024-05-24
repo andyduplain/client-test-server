@@ -126,8 +126,6 @@ async fn download(url: &Uri, filename: &Path) -> Result<()> {
     let mut total_downloaded = 0;
     let mut printed_pct = 0;
 
-    // Stream the body, writing each chunk to stdout as we get it
-    // (instead of buffering and printing at the end).
     while let Some(next) = res.frame().await {
         let frame = next?;
         if let Some(chunk) = frame.data_ref() {
@@ -174,6 +172,8 @@ async fn send_file(
     filename: &Path,
     content_type: &str,
 ) -> Result<Response<BoxBody<Bytes, std::io::Error>>> {
+    log::debug!("Request headers: {:?}", req_headers,);
+
     let mut resp_headers = HeaderMap::new();
     resp_headers.append(CONTENT_TYPE, content_type.try_into()?);
 
@@ -202,15 +202,11 @@ async fn send_file(
         resp_headers.append(ACCEPT_RANGES, "bytes".try_into()?);
         resp_headers.append(CONTENT_LENGTH, content_length.into());
 
-        log::debug!(
-            "req_headers={:?} resp_headers={:?}",
-            req_headers,
-            resp_headers
-        );
+        log::debug!("Response headers: {:?}", resp_headers);
 
         file.seek(SeekFrom::Start(start))
             .await
-            .context(anyhow!("Failed to seek file to {}", range.start))?;
+            .context(anyhow!("Failed to seek file to {}", start))?;
 
         (StatusCode::PARTIAL_CONTENT, ReaderStream::new(file))
     } else {
