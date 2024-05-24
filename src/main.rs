@@ -56,7 +56,7 @@ async fn main() -> Result<()> {
     // Download the video file; we don't want to keep such a big file in git
     download(&Uri::from_static("http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_2160p_60fps_normal.mp4"), &content("bbb.mp4")).await?;
 
-    let addr: SocketAddr = "127.0.0.1:1337".parse().unwrap();
+    let addr: SocketAddr = "0.0.0.0:1337".parse().unwrap();
 
     let listener = TcpListener::bind(addr).await?;
     log::info!("Listening on http://{}", addr);
