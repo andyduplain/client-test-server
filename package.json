@@ -1,0 +1,17 @@
+{
+  "name": "client-test-server",
+  "version": "1.0.0",
+  "description": "A video streaming server to test Connect clients.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Andy Duplain <andy.duplain@cyberhive.com>",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "range-parser": "^1.2.1"
+  }
+}
